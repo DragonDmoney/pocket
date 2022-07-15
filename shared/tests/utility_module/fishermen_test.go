@@ -7,7 +7,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/pokt-network/pocket/persistence/pre_persistence"
+	"github.com/pokt-network/pocket/persistence"
+	"github.com/pokt-network/pocket/shared/modules"
 	"github.com/stretchr/testify/require"
 
 	"github.com/pokt-network/pocket/shared/crypto"
@@ -456,7 +457,7 @@ func TestUtilityContext_UpdateFisherman(t *testing.T) {
 }
 
 func GetAllTestingFishermen(t *testing.T, ctx utility.UtilityContext) []*genesis.Fisherman {
-	actors, err := (ctx.Context.PersistenceContext).(*pre_persistence.PrePersistenceContext).GetAllFishermen(ctx.LatestHeight)
+	actors, err := (ctx.Context.PersistenceContext).(*modules.PersistenceContext).GetAllFishermen(ctx.LatestHeight)
 	require.NoError(t, err)
 	return actors
 }

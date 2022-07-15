@@ -5,7 +5,8 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/pokt-network/pocket/persistence/pre_persistence"
+	"github.com/pokt-network/pocket/persistence"
+	"github.com/pokt-network/pocket/shared/modules"
 	"github.com/stretchr/testify/require"
 
 	"github.com/pokt-network/pocket/shared/crypto"
@@ -533,7 +534,7 @@ func TestUtilityContext_GetValidatorMissedBlocks(t *testing.T) {
 		t.Fatal("wrong missed blocks starting amount")
 	}
 	actor.MissedBlocks = uint32(missedBlocks)
-	if err := (ctx.Context.PersistenceContext).(*pre_persistence.PrePersistenceContext).SetValidatorMissedBlocks(actor.Address, int(actor.MissedBlocks)); err != nil {
+	if err := (ctx.Context.PersistenceContext).(modules.PersistenceContext).SetValidatorMissedBlocks(actor.Address, int(actor.MissedBlocks)); err != nil {
 		t.Fatal(err)
 	}
 	gotMissedBlocks, err := ctx.GetValidatorMissedBlocks(actor.Address)
@@ -650,7 +651,7 @@ func TestUtilityContext_SetValidatorStakedTokens(t *testing.T) {
 }
 
 func GetAllTestingValidators(t *testing.T, ctx utility.UtilityContext) []*genesis.Validator {
-	actors, err := (ctx.Context.PersistenceContext).(*pre_persistence.PrePersistenceContext).GetAllValidators(ctx.LatestHeight)
+	actors, err := (ctx.Context.PersistenceContext).(*modules.PersistenceContext).GetAllValidators(ctx.LatestHeight)
 	require.NoError(t, err)
 	return actors
 }

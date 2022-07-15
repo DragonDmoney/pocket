@@ -11,7 +11,6 @@ import (
 	"log"
 
 	"github.com/pokt-network/pocket/consensus"
-	"github.com/pokt-network/pocket/persistence/pre_persistence"
 	"github.com/pokt-network/pocket/shared/types"
 	typesGenesis "github.com/pokt-network/pocket/shared/types/genesis"
 
@@ -38,7 +37,7 @@ func Create(cfg *config.Config) (n *Node, err error) {
 	}
 
 	// TODO(drewsky): deprecate pre-persistence
-	prePersistenceMod, err := pre_persistence.Create(cfg)
+	persistenceMod, err := persistence.Create(cfg)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +60,7 @@ func Create(cfg *config.Config) (n *Node, err error) {
 		return nil, err
 	}
 
-	bus, err := CreateBus(prePersistenceMod, pre2pMod, utilityMod, consensusMod)
+	bus, err := CreateBus(persistenceMod, pre2pMod, utilityMod, consensusMod)
 	if err != nil {
 		return nil, err
 	}

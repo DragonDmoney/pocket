@@ -7,7 +7,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/pokt-network/pocket/persistence/pre_persistence"
+	"github.com/pokt-network/pocket/persistence"
+	"github.com/pokt-network/pocket/shared/modules"
 	"github.com/stretchr/testify/require"
 
 	"github.com/pokt-network/pocket/shared/crypto"
@@ -466,7 +467,7 @@ func TestUtilityContext_UpdateApp(t *testing.T) {
 }
 
 func GetAllTestingApps(t *testing.T, ctx utility.UtilityContext) []*genesis.App {
-	actors, err := (ctx.Context.PersistenceContext).(*pre_persistence.PrePersistenceContext).GetAllApps(ctx.LatestHeight)
+	actors, err := (ctx.Context.PersistenceContext).(*modules.PersistenceContext).GetAllApps(ctx.LatestHeight)
 	require.NoError(t, err)
 	return actors
 }

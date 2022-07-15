@@ -5,7 +5,8 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/pokt-network/pocket/persistence/pre_persistence"
+	"github.com/pokt-network/pocket/persistence"
+	"github.com/pokt-network/pocket/shared/modules"
 	"github.com/stretchr/testify/require"
 
 	"github.com/pokt-network/pocket/shared/config"
@@ -39,7 +40,7 @@ func NewTestingUtilityContext(t *testing.T, height int64) utility.UtilityContext
 	mempool := NewTestingMempool(t)
 	cfg := &config.Config{Genesis: genesisJson()}
 	_ = typesGenesis.GetNodeState(cfg)
-	persistenceModule := pre_persistence.NewPrePersistenceModule(memdb.New(comparer.DefaultComparer, 10000000), mempool, cfg)
+	persistenceModule := modules.NewPersistenceModule(memdb.New(comparer.DefaultComparer, 10000000), mempool, cfg)
 	if err := persistenceModule.Start(); err != nil {
 		t.Fatal(err)
 	}
