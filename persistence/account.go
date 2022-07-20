@@ -5,6 +5,7 @@ import (
 	"math/big"
 
 	"github.com/jackc/pgx/v4"
+	typesGenesis "github.com/pokt-network/pocket/shared/types/genesis"
 	"github.com/pokt-network/pocket/persistence/schema"
 	shared "github.com/pokt-network/pocket/shared/types"
 )
@@ -67,6 +68,33 @@ func (p PostgresContext) SetAccountAmount(address []byte, amount string) error {
 func (p *PostgresContext) operationAccountAmount(address []byte, deltaAmount string, op func(*big.Int, *big.Int) error) error {
 	return p.operationPoolOrAccAmount(hex.EncodeToString(address), deltaAmount, op, p.getAccountAmountStr, schema.InsertAccountAmountQuery)
 }
+
+func (p *PostgresContext) GetAllAccounts(height int64) (accs []*typesGenesis.Account, err error) {
+	ctx, conn, err := p.DB.GetCtxAndConnection()
+	if err != nil {
+		return
+	}
+	rows, err := conn.Query(ctx, schema.GetAllAccountsQuery(height))
+	
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var a *typesGenesis.Account
+
+		err := rows.Scan(&a.Address, &a.Amount) 
+		if err != nil {
+			return nil, err
+		}
+		accs = append(accs, a)
+	}
+
+	return 
+}
+
 
 // --- Pool Functions ---
 

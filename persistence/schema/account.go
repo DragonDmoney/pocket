@@ -30,12 +30,20 @@ func InsertAccountAmountQuery(address, amount string, height int64) string {
 	return InsertAcc(AddressCol, address, amount, height, AccountTableName, AccountHeightConstraint)
 }
 
+func GetAllAccountsQuery(height int64) string {
+	return SelectAll(AddressCol, height)
+}
+
 func GetPoolAmountQuery(name string, height int64) string {
 	return SelectBalance(NameCol, name, height, PoolTableName)
 }
 
 func InsertPoolAmountQuery(name, amount string, height int64) string {
 	return InsertAcc(NameCol, name, amount, height, PoolTableName, PoolHeightConstraint)
+}
+
+func GetAllPoolsQuery(height int64) string {
+	return SelectAll(PoolTableName, height)
 }
 
 func AccountOrPoolSchema(mainColName, constraintName string) string {
@@ -55,6 +63,11 @@ func InsertAcc(actorSpecificParam, actorSpecificParamValue, amount string, heigh
 			ON CONFLICT ON CONSTRAINT %s
 			DO UPDATE SET balance=EXCLUDED.balance, height=EXCLUDED.height
 		`, tableName, actorSpecificParam, actorSpecificParamValue, amount, height, constraintName)
+}
+
+func SelectAll(tableName string, height int64) string {
+	return fmt.Sprintf(`SELECT * FROM %s WHERE height<=%d ORDER BY height DESC`,
+		tableName, height)
 }
 
 func SelectBalance(actorSpecificParam, actorSpecificParamValue string, height int64, tableName string) string {

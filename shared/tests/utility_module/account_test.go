@@ -217,13 +217,13 @@ func TestUtilityContext_SubtractAccountAmount(t *testing.T) {
 }
 
 func GetAllTestingAccounts(t *testing.T, ctx utility.UtilityContext) []*genesis.Account {
-	accs, err := (ctx.Context.PersistenceContext).(*modules.PersistenceContext).GetAllAccounts(0)
+	accs, err := (ctx.Context.PersistenceContext).(modules.PersistenceContext).GetAllAccounts(0)
 	require.NoError(t, err)
 	return accs
 }
 
 func GetAllTestingPools(t *testing.T, ctx utility.UtilityContext) []*genesis.Pool {
-	accs, err := (ctx.Context.PersistenceContext).(*modules.PersistenceContext).GetAllPools(0)
+	accs, err := (ctx.Context.PersistenceContext).(modules.PersistenceContext).GetAllPools(0)
 	require.NoError(t, err)
 	return accs
 }

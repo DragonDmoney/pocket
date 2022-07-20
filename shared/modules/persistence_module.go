@@ -3,6 +3,7 @@ package modules
 import (
 	"github.com/pokt-network/pocket/shared/types"
 	"github.com/syndtr/goleveldb/leveldb/memdb"
+	typesGenesis "github.com/pokt-network/pocket/shared/types/genesis"
 )
 
 type PersistenceModule interface {
@@ -51,6 +52,7 @@ type PersistenceContext interface {
 	SubtractAccountAmount(address []byte, amount string) error
 	GetAccountAmount(address []byte, height int64) (string, error)
 	SetAccountAmount(address []byte, amount string) error // TECHDEBT(team): Delete this function
+	GetAllAccounts(height int64) (accs []*typesGenesis.Account, err error)
 
 	// App Operations
 	GetAppExists(address []byte, height int64) (exists bool, err error)
