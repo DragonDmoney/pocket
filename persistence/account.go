@@ -74,7 +74,7 @@ func (p *PostgresContext) GetAllAccounts(height int64) (accs []*typesGenesis.Acc
 	if err != nil {
 		return
 	}
-	rows, err := conn.Query(ctx, schema.GetAllAccountsQuery(height))
+	rows, err := conn.Query(ctx, schema.SelectAll(schema.AccountTableName, height))
 	
 	if err != nil {
 		return
@@ -173,7 +173,7 @@ func (p *PostgresContext) GetAllPools(height int64) (pools []*typesGenesis.Pool,
 	if err != nil {
 		return
 	}
-	rows, err := conn.Query(ctx, schema.GetAllAccountsQuery(height))
+	rows, err := conn.Query(ctx, schema.SelectAll(schema.PoolTableName, height))
 	
 	if err != nil {
 		return
