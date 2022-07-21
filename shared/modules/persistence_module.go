@@ -44,6 +44,7 @@ type PersistenceContext interface {
 	SubtractPoolAmount(name string, amount string) error
 	GetPoolAmount(name string, height int64) (amount string, err error)
 	SetPoolAmount(name string, amount string) error
+	GetAllPools(height int64) (pools []*typesGenesis.Pool, err error)
 
 	InsertPool(name string, address []byte, amount string) error
 

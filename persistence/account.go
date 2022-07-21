@@ -168,6 +168,33 @@ func (p *PostgresContext) operationPoolAmount(name string, amount string, op fun
 	return p.operationPoolOrAccAmount(name, amount, op, p.GetPoolAmount, schema.InsertPoolAmountQuery)
 }
 
+func (p *PostgresContext) GetAllPools(height int64) (pools []*typesGenesis.Pool, err error) {
+	ctx, conn, err := p.DB.GetCtxAndConnection()
+	if err != nil {
+		return
+	}
+	rows, err := conn.Query(ctx, schema.GetAllAccountsQuery(height))
+	
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var p *typesGenesis.Pool
+
+		err := rows.Scan(&p.Name, &p.Account.Amount) 
+		if err != nil {
+			return nil, err
+		}
+		pools = append(pools, p)
+	}
+
+	return 
+}
+
+
 func (p *PostgresContext) operationPoolOrAccAmount(name, amount string,
 	op func(*big.Int, *big.Int) error,
 	getAmount func(string, int64) (string, error),
