@@ -39,6 +39,19 @@ type PersistenceContext interface {
 	// Indexer Operations
 	TransactionExists(transactionHash string) bool
 
+	// Protocol Actor Operations
+	GetExists(actorSchema schema.ProtocolActorSchema, address []byte, height int64) (exists bool, err error)
+	GetActor(actorSchema schema.ProtocolActorSchema, address []byte, height int64) (actor schema.BaseActor, err error) 
+	InsertActor(actorSchema schema.ProtocolActorSchema, actor schema.BaseActor) error 
+	UpdateActor(actorSchema schema.ProtocolActorSchema, actor schema.BaseActor) error 
+	GetActorsReadyToUnstake(actorSchema schema.ProtocolActorSchema, height int64) (actors []*types.UnstakingActor, err error) 
+	GetActorStatus(actorSchema schema.ProtocolActorSchema, address []byte, height int64) (int, error) 
+	SetActorUnstakingHeightAndStatus(actorSchema schema.ProtocolActorSchema, address []byte, unstakingHeight int64) error 
+	GetActorPauseHeightIfExists(actorSchema schema.ProtocolActorSchema, address []byte, height int64) (pausedHeight int64, err error) 
+	SetActorStatusAndUnstakingHeightIfPausedBefore(actorSchema schema.ProtocolActorSchema, pausedBeforeHeight, unstakingHeight int64) error 
+	SetActorPauseHeight(actorSchema schema.ProtocolActorSchema, address []byte, pauseHeight int64) error 
+	GetActorOutputAddress(actorSchema schema.ProtocolActorSchema, operatorAddr []byte, height int64) ([]byte, error) 
+
 	// Pool Operations
 	AddPoolAmount(name string, amount string) error
 	SubtractPoolAmount(name string, amount string) error
