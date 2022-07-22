@@ -457,7 +457,7 @@ func TestUtilityContext_UpdateFisherman(t *testing.T) {
 }
 
 func GetAllTestingFishermen(t *testing.T, ctx utility.UtilityContext) []*genesis.Fisherman {
-	actors, err := (ctx.Context.PersistenceContext).(*modules.PersistenceContext).GetAllFishermen(ctx.LatestHeight)
+	actors, err := (ctx.Context.PersistenceContext).(modules.PersistenceContext).GetAllFishermen(ctx.LatestHeight)
 	require.NoError(t, err)
 	return actors
 }

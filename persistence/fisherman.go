@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"log"
 
+	typesGenesis "github.com/pokt-network/pocket/shared/types/genesis"
 	"github.com/pokt-network/pocket/persistence/schema"
 	"github.com/pokt-network/pocket/shared/types"
 )
@@ -78,4 +79,34 @@ func (p PostgresContext) SetFishermanPauseHeight(address []byte, height int64) e
 
 func (p PostgresContext) GetFishermanOutputAddress(operator []byte, height int64) (output []byte, err error) {
 	return p.GetActorOutputAddress(schema.FishermanActor, operator, height)
+}
+
+func (p PostgresContext) GetAllFishermen(height int64) (fishermen []*typesGenesis.Fisherman, err error) {
+	ctx, conn, err := p.DB.GetCtxAndConnection()
+	if err != nil {
+		return
+	}
+	rows, err := conn.Query(ctx, schema.SelectAll(schema.FishermanTableName, height))
+	
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var f *typesGenesis.Fisherman
+
+		var height int64
+		err := rows.Scan(&f.Address, &f.PublicKey, &f.StakedTokens, &f.Status, &f.Output, &f.PausedHeight, &f.UnstakingHeight, &height) 
+		if err != nil {
+			return nil, err
+		}
+
+		f.Paused = height >= int64(f.PausedHeight) 
+
+		fishermen = append(fishermen, f)
+	}
+
+	return 
 }
