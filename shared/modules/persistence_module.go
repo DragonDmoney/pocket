@@ -63,9 +63,9 @@ type PersistenceContext interface {
 	GetAppsReadyToUnstake(height int64, status int) (apps []*types.UnstakingActor, err error)
 	GetAppStatus(address []byte, height int64) (status int, err error)
 	SetAppUnstakingHeightAndStatus(address []byte, unstakingHeight int64, status int) error
-	GetAppPauseHeightIfExists(address []byte, height int64) (int64, error)
+	GetAppPausedHeightIfExists(address []byte, height int64) (int64, error)
 	SetAppStatusAndUnstakingHeightIfPausedBefore(pausedBeforeHeight, unstakingHeight int64, status int) error
-	SetAppPauseHeight(address []byte, height int64) error
+	SetAppPausedHeight(address []byte, height int64) error
 	GetAppOutputAddress(operator []byte, height int64) (output []byte, err error)
 
 	// ServiceNode Operations
