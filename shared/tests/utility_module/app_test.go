@@ -467,7 +467,7 @@ func TestUtilityContext_UpdateApp(t *testing.T) {
 }
 
 func GetAllTestingApps(t *testing.T, ctx utility.UtilityContext) []*genesis.App {
-	actors, err := (ctx.Context.PersistenceContext).(*modules.PersistenceContext).GetAllApps(ctx.LatestHeight)
+	actors, err := (ctx.Context.PersistenceContext).(modules.PersistenceContext).GetAllApps(ctx.LatestHeight)
 	require.NoError(t, err)
 	return actors
 }

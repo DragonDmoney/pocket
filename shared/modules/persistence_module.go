@@ -75,6 +75,7 @@ type PersistenceContext interface {
 	UpdateApp(address []byte, maxRelaysToAdd string, amountToAdd string, chainsToUpdate []string) error
 	DeleteApp(address []byte) error
 	GetAppsReadyToUnstake(height int64, status int) (apps []*types.UnstakingActor, err error)
+	GetAllApps(height int64) (apps []*typesGenesis.App, err error)
 	GetAppStatus(address []byte, height int64) (status int, err error)
 	SetAppUnstakingHeightAndStatus(address []byte, unstakingHeight int64, status int) error
 	GetAppPauseHeightIfExists(address []byte, height int64) (int64, error)
