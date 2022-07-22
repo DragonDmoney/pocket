@@ -65,16 +65,16 @@ func (p PostgresContext) SetAppUnstakingHeightAndStatus(address []byte, unstakin
 	return p.SetActorUnstakingHeightAndStatus(schema.ApplicationActor, address, unstakingHeight)
 }
 
-func (p PostgresContext) GetAppPausedHeightIfExists(address []byte, height int64) (int64, error) {
-	return p.GetActorPausedHeightIfExists(schema.ApplicationActor, address, height)
+func (p PostgresContext) GetAppPauseHeightIfExists(address []byte, height int64) (int64, error) {
+	return p.GetActorPauseHeightIfExists(schema.ApplicationActor, address, height)
 }
 
 func (p PostgresContext) SetAppStatusAndUnstakingHeightIfPausedBefore(pausedBeforeHeight, unstakingHeight int64, _ int) error {
 	return p.SetActorStatusAndUnstakingHeightIfPausedBefore(schema.ApplicationActor, pausedBeforeHeight, unstakingHeight)
 }
 
-func (p PostgresContext) SetAppPausedHeight(address []byte, height int64) error {
-	return p.SetActorPausedHeight(schema.ApplicationActor, address, height)
+func (p PostgresContext) SetAppPauseHeight(address []byte, height int64) error {
+	return p.SetActorPauseHeight(schema.ApplicationActor, address, height)
 }
 
 func (p PostgresContext) GetAppOutputAddress(operator []byte, height int64) ([]byte, error) {
