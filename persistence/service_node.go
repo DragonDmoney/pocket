@@ -84,6 +84,7 @@ func (p PostgresContext) SetServiceNodePauseHeight(address []byte, height int64)
 func (p PostgresContext) GetServiceNodeOutputAddress(operator []byte, height int64) (output []byte, err error) {
 	return p.GetActorOutputAddress(schema.ServiceNodeActor, operator, height)
 }
+
 func (p PostgresContext) GetAllServiceNodes(height int64) (sns []*typesGenesis.ServiceNode, err error) {
 	ctx, conn, err := p.DB.GetCtxAndConnection()
 	if err != nil {
@@ -101,7 +102,7 @@ func (p PostgresContext) GetAllServiceNodes(height int64) (sns []*typesGenesis.S
 		var s *typesGenesis.ServiceNode
 
 		var height int64
-		err := rows.Scan(&s.Address, &s.PublicKey, &s.StakedTokens, &s.Status, &s.Output, &s.PausedHeight, &s.UnstakingHeight, &height) 
+		err := rows.Scan(&s.Address, &s.PublicKey, &s.StakedTokens, &s.ServiceUrl, &s.Output, &s.PausedHeight, &s.UnstakingHeight, &height) 
 		if err != nil {
 			return nil, err
 		}

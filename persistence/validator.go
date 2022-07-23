@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"log"
 
+	typesGenesis "github.com/pokt-network/pocket/shared/types/genesis"
 	"github.com/pokt-network/pocket/persistence/schema"
 	"github.com/pokt-network/pocket/shared/types"
 )
@@ -113,4 +114,34 @@ func (p PostgresContext) SetValidatorMissedBlocks(address []byte, missedBlocks i
 // TODO(team): implement missed blocks
 func (p PostgresContext) GetValidatorMissedBlocks(address []byte, height int64) (int, error) {
 	return 0, nil
+}
+
+func (p PostgresContext) GetAllValidators(height int64) (validators []*typesGenesis.Validator, err error) {
+	ctx, conn, err := p.DB.GetCtxAndConnection()
+	if err != nil {
+		return
+	}
+	rows, err := conn.Query(ctx, schema.SelectAll(schema.ValidatorTableName, height))
+	
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var v *typesGenesis.Validator
+
+		var height int64
+		err := rows.Scan(&v.Address, &v.PublicKey, &v.StakedTokens, &v.ServiceUrl, &v.Output, &v.PausedHeight, &v.UnstakingHeight, &height) 
+		if err != nil {
+			return nil, err
+		}
+
+		v.Paused = height >= int64(v.PausedHeight) 
+
+		validators = append(validators, v)
+	}
+
+	return 
 }

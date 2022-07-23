@@ -15,6 +15,10 @@ type persistenceModule struct {
 	bus modules.Bus
 }
 
+func NewPersistenceModule(c *config.Config) (modules.PersistenceModule, error) {
+	return Create(c)
+} 
+
 func Create(c *config.Config) (modules.PersistenceModule, error) {
 	if _, err := ConnectAndInitializeDatabase(c.Persistence.PostgresUrl, c.Persistence.NodeSchema); err != nil {
 		return nil, err

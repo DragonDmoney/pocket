@@ -5,7 +5,6 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/pokt-network/pocket/persistence"
 	"github.com/pokt-network/pocket/shared/modules"
 	"github.com/stretchr/testify/require"
 

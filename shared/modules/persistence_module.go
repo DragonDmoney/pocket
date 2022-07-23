@@ -3,6 +3,7 @@ package modules
 import (
 	"github.com/pokt-network/pocket/shared/types"
 	"github.com/syndtr/goleveldb/leveldb/memdb"
+	"github.com/pokt-network/pocket/shared/config"
 	schema "github.com/pokt-network/pocket/persistence/schema"
 	typesGenesis "github.com/pokt-network/pocket/shared/types/genesis"
 )
@@ -21,6 +22,7 @@ type PersistenceModule interface {
 // is an application specific blockchain and improves readability throughout the rest of the codebase
 // by limiting the use of abstractions.
 type PersistenceContext interface {
+
 	// Context Operations
 	NewSavePoint([]byte) error
 	RollbackToSavePoint([]byte) error
@@ -133,7 +135,7 @@ type PersistenceContext interface {
 
 	SetValidatorStakedTokens(address []byte, tokens string) error
 	GetValidatorStakedTokens(address []byte, height int64) (tokens string, err error)
-
+	GetAllValidators(height int64) (validators []*typesGenesis.Validator, err error) 
 	/* TODO(olshansky): review/revisit this in more details */
 
 	// Params

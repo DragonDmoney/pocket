@@ -5,7 +5,6 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/pokt-network/pocket/persistence"
 	"github.com/pokt-network/pocket/shared/modules"
 	"github.com/stretchr/testify/require"
 
@@ -651,7 +650,7 @@ func TestUtilityContext_SetValidatorStakedTokens(t *testing.T) {
 }
 
 func GetAllTestingValidators(t *testing.T, ctx utility.UtilityContext) []*genesis.Validator {
-	actors, err := (ctx.Context.PersistenceContext).(*modules.PersistenceContext).GetAllValidators(ctx.LatestHeight)
+	actors, err := (ctx.Context.PersistenceContext).(modules.PersistenceContext).GetAllValidators(ctx.LatestHeight)
 	require.NoError(t, err)
 	return actors
 }
