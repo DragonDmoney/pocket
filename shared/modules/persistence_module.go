@@ -98,7 +98,7 @@ type PersistenceContext interface {
 
 	GetServiceNodeCount(chain string, height int64) (int, error)
 	GetServiceNodesPerSessionAt(height int64) (int, error)
-
+	GetAllServiceNodes(height int64) (sns []*typesGenesis.ServiceNode, err error) 
 	// Fisherman Operations
 	GetFishermanExists(address []byte, height int64) (exists bool, err error)
 	InsertFisherman(address []byte, publicKey []byte, output []byte, paused bool, status int, serviceURL string, stakedTokens string, chains []string, pausedHeight int64, unstakingHeight int64) error

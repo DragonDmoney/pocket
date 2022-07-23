@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"log"
 
+	typesGenesis "github.com/pokt-network/pocket/shared/types/genesis"
 	"github.com/pokt-network/pocket/persistence/schema"
 	"github.com/pokt-network/pocket/shared/types"
 )
@@ -82,4 +83,33 @@ func (p PostgresContext) SetServiceNodePauseHeight(address []byte, height int64)
 
 func (p PostgresContext) GetServiceNodeOutputAddress(operator []byte, height int64) (output []byte, err error) {
 	return p.GetActorOutputAddress(schema.ServiceNodeActor, operator, height)
+}
+func (p PostgresContext) GetAllServiceNodes(height int64) (sns []*typesGenesis.ServiceNode, err error) {
+	ctx, conn, err := p.DB.GetCtxAndConnection()
+	if err != nil {
+		return
+	}
+	rows, err := conn.Query(ctx, schema.SelectAll(schema.ServiceNodeTableName, height))
+	
+	if err != nil {
+		return
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var s *typesGenesis.ServiceNode
+
+		var height int64
+		err := rows.Scan(&s.Address, &s.PublicKey, &s.StakedTokens, &s.Status, &s.Output, &s.PausedHeight, &s.UnstakingHeight, &height) 
+		if err != nil {
+			return nil, err
+		}
+
+		s.Paused = height >= int64(s.PausedHeight) 
+
+		sns = append(sns, s)
+	}
+
+	return 
 }

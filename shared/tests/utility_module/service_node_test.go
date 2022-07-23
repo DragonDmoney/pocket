@@ -7,7 +7,6 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/pokt-network/pocket/persistence"
 	"github.com/pokt-network/pocket/shared/modules"
 	"github.com/stretchr/testify/require"
 
@@ -477,7 +476,7 @@ func TestUtilityContext_UpdateServiceNode(t *testing.T) {
 }
 
 func GetAllTestingServiceNodes(t *testing.T, ctx utility.UtilityContext) []*genesis.ServiceNode {
-	actors, err := (ctx.Context.PersistenceContext).(*modules.PersistenceContext).GetAllServiceNodes(ctx.LatestHeight)
+	actors, err := (ctx.Context.PersistenceContext).(modules.PersistenceContext).GetAllServiceNodes(ctx.LatestHeight)
 	require.NoError(t, err)
 	return actors
 }
