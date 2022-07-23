@@ -20,7 +20,6 @@ type Config struct {
 	Pre2P          *Pre2PConfig          `json:"pre2p"` // TECHDEBT(team): consolidate/replace this with P2P configs depending on next steps
 	P2P            *P2PConfig            `json:"p2p"`
 	Consensus      *ConsensusConfig      `json:"consensus"`
-	PrePersistence *PrePersistenceConfig `json:"pre_persistence"`
 	Persistence    *PersistenceConfig    `json:"persistence"`
 	Utility        *UtilityConfig        `json:"utility"`
 }

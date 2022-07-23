@@ -3,7 +3,6 @@ package modules
 import (
 	"github.com/pokt-network/pocket/shared/types"
 	"github.com/syndtr/goleveldb/leveldb/memdb"
-	"github.com/pokt-network/pocket/shared/config"
 	schema "github.com/pokt-network/pocket/persistence/schema"
 	typesGenesis "github.com/pokt-network/pocket/shared/types/genesis"
 )

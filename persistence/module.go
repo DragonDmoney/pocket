@@ -20,6 +20,7 @@ func NewPersistenceModule(c *config.Config) (modules.PersistenceModule, error) {
 } 
 
 func Create(c *config.Config) (modules.PersistenceModule, error) {
+	log.Println(c)
 	if _, err := ConnectAndInitializeDatabase(c.Persistence.PostgresUrl, c.Persistence.NodeSchema); err != nil {
 		return nil, err
 	}
